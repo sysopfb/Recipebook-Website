@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    {% if title %}
+    <title>{{title}} - RecipeBook</title>
+    {% else %}
+    <title>RecipeBook</title>
+    {% endif %}
+    <meta name="RecipeBook website" content="Food recipes">
+    <link rel="stylesheet" href="static/css/stylesheet.css" type="text/css"/>
+</head>
+<body>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src={{url_for('static', filename='models.js')}}></script></script>
+    <script src={{url_for('static', filename='collections.js')}}></script></script>
+    <script src={{url_for('static', filename='views.js')}}></script></script>
+    <script type="text/template" id="recipe-template">
+        <li>
+            <h1><%- name %></h1><br><br>
+            <%- ingredients %><br><br>
+            <%- instructions %><br>
+            By: <%- author %>
+        </li>
+    </script>
+    <div id="navigation">
+        <a id='AllButton' href="#">Get All</a>
+        <a id='Search' href="#">Search</a>
+        <a id='Create' href="#">Create</a>
+    </div>
+    {% block content %}{% endblock %}
+</body>
+</html>

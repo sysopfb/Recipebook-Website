@@ -4,8 +4,22 @@
 <div id="dialog-search" style="display:none">
     <form>
         <fieldset>
-            <label for="name">Recipe Name</label>
+            <label for="sname">Recipe Name</label>
+            <input type="text" name="sname" id="sname"/>
+        </fieldset>
+    </form>
+</div>
+<div id="dialog-create" style="display:none">
+    <form>
+        <fieldset>
+            <label for="name">Recipe Name:</label>
             <input type="text" name="name" id="name"/>
+            <label for="author">Author:</label>
+            <input type="text" name="author" id="author"/><br>
+            <label for="ingredients">Ingredients:</label>
+            <textarea rows="4" cols="25" name="ingredients" id="ingredients">Enter ingredient list here...</textarea>
+            <label for="instructions">Instructions:</label>
+            <textarea rows="4" cols="25" name="instructions" id="instructions">Enter instructions here...</textarea>
         </fieldset>
     </form>
 </div>

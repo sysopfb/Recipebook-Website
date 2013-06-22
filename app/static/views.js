@@ -30,7 +30,6 @@
             modal: 'true',
             buttons: {
                 "Search": function() {
-                    //searchlist.url = '/recipes/'+name.val();
                     searchlist.fetch({data: $.param({'data': name.val()})}).done(function () {
                         $('#recipe-list').html('');
                         searchlist.forEach(function(model) {
@@ -64,8 +63,9 @@
             modal: 'true',
             buttons: {
                 "Create": function() {
+                    var lines = ringredients.val().replace(/\r\n/g, "\n").split("\n");
                     recipes.create({name: rname.val(),
-                                    ingredients: ringredients.val(),
+                                    ingredients: lines,
                                     instructions: rinstructions.val(),
                                     author: rauthor.val()
                                     });

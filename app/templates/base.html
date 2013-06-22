@@ -21,7 +21,11 @@
     <script type="text/template" id="recipe-template">
         <li>
             <h1><%- name %></h1><br>
-            <%- ingredients %><br><br>
+            <ul id="ingredients">
+                <% _.each(ingredients, function(data) {
+                    %> <li><%= data %></li> <%
+                }); %>
+            </ul>
             <%- instructions %><br>
             By: <%- author %>
         </li>

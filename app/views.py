@@ -24,7 +24,7 @@ class RecipeAPI(MethodView):
     
     #put means a record was updated and sent
     def put(self):
-        pass
+        return ""
 
     #post means a new record was sent
     def post(self):

@@ -3,10 +3,12 @@
     events: {
         'click #AllButton': 'getAll',
         'click #Search': 'searchFunc',
+        'click #Create': 'createFunc',
     },
     initialize: function() {
         users = new UsersCollection();
         recipes = new RecipeCollection();
+        searchlist = new RecipeCollection();
     },
     
     getAll: function(event) {
@@ -22,18 +24,61 @@
     },
 
     searchFunc : function(event) {
-        var name = $('#name');
+        var name = $('#sname');
+        var rtemplate = _.template($('#recipe-template').html());
         $('#dialog-search').dialog({
             modal: 'true',
             buttons: {
                 "Search": function() {
-                    console.log(name.val())
+                    //searchlist.url = '/recipes/'+name.val();
+                    searchlist.fetch({data: $.param({'data': name.val()})}).done(function () {
+                        $('#recipe-list').html('');
+                        searchlist.forEach(function(model) {
+                            $('#recipe-list').append(rtemplate(model.toJSON()));
+                        });
+                    });
+                    $(this).dialog("close");
                 },
                 Cancel: function () {
+                    $(this).dialog("close");
+                }
+            },
+            //turns off submitting with the enter key
+            open: function() {
+                $(this).keypress(function(e) {
+                    if (e.keyCode == $.ui.keyCode.ENTER) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                });
+            }
+        });
+    },
+
+    createFunc : function(event) {
+        var rname = $('#name');
+        var ringredients = $('textarea#ingredients');
+        var rinstructions = $('textarea#instructions');
+        var rauthor = $('#author');
+        $('#dialog-create').dialog({
+            modal: 'true',
+            buttons: {
+                "Create": function() {
+                    recipes.create({name: rname.val(),
+                                    ingredients: ringredients.val(),
+                                    instructions: rinstructions.val(),
+                                    author: rauthor.val()
+                                    });
+                },
+                Clear: function() {
+                    rname.val("");
+                    ringredients.val("");
+                    rinstructions.val("");
+                },
+                Close: function() {
                     $(this).dialog("close");
                 }
             }
         });
     }
-        
 });

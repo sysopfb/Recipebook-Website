@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 #Base = declarative_base()
 Base = db.Model
-
+'''
 class User(Base):
     __tablename__ = 'users'
 
@@ -39,7 +39,7 @@ class Post(Base):
 
     def __repr__(self):
         return '<Post %r>' % (self.body)
-
+'''
 class Recipe(Base):
     __tablename__ = 'recipes'
 
@@ -51,14 +51,15 @@ class Recipe(Base):
     name = db.Column(db.String(64), unique = True)
     ingredients = db.Column(db.String(512))
     instructions = db.Column(db.String(1024))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    author = db.Column(db.String(64))
+#    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def to_json(self):
         return dict(id = self.id,
                     name=self.name,
                     ingredients=self.ingredients,
                     instructions=self.instructions,
-                    author=self.author.name)
+                    author=self.author)
     
     def __repr__(self):
         return '<Recipe %r>' % (self.name)

@@ -49,8 +49,8 @@ class Recipe(Base):
     
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(64), unique = True)
-    ingredients = db.Column(db.String(512))
-    instructions = db.Column(db.String(1024))
+    ingredients = db.Column(db.PickleType())
+    instructions = db.Column(db.PickleType())
     author = db.Column(db.String(64))
 #    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 

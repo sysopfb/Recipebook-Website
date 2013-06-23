@@ -19,14 +19,20 @@
     <script src={{url_for('static', filename='collections.js')}}></script></script>
     <script src={{url_for('static', filename='views.js')}}></script></script>
     <script type="text/template" id="recipe-template">
-        <li>
+        <li data-id=<%- id %>>
             <h1><%- name %></h1><br>
+            Ingredients:<br>
             <ul id="ingredients">
                 <% _.each(ingredients, function(data) {
                     %> <li><%= data %></li> <%
                 }); %>
             </ul>
-            <%- instructions %><br>
+            Insutrctions:<br>
+            <ol id="instructions">
+                <% _.each(instructions, function(data) {
+                    %> <li><%= data %></li> <%
+                }); %>
+            </ol>
             By: <%- author %>
         </li>
     </script>

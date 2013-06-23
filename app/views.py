@@ -13,7 +13,7 @@ from models import Recipe
 
 class RecipeAPI(MethodView):
 
-    def get(self):
+    def get(self, r_id):
         searchstr = request.args.get('data')
         if searchstr is None:
             recipes = db.session.query(Recipe).all()
@@ -23,7 +23,29 @@ class RecipeAPI(MethodView):
         return jsonify(items=[recipe.to_json() for recipe in recipes])
     
     #put means a record was updated and sent
-    def put(self):
+    def put(self, r_id):
+        data = json.loads(request.data)
+        recipe = db.session.query(Recipe).filter_by(id=r_id).first()
+        recipe.name = data["name"]
+        recipe.ingredients = data["ingredients"]
+        recipe.instructions = data["instructions"]
+        recipe.author = data["author"]
+        db.session.add(recipe)
+        try:
+            db.session.commit()
+        except Exception,e:
+            print "error adding new record"
+            db.session.rollback()
+        return ""
+
+    def delete(self, r_id):
+        record = db.session.query(Recipe).filter_by(id=r_id).first()
+        db.session.delete(record)
+        try:
+            db.session.commit()
+        except Exception,e:
+            print "error adding new record"
+            db.session.rollback()
         return ""
 
     #post means a new record was sent
@@ -42,8 +64,10 @@ class RecipeAPI(MethodView):
             db.session.rollback()
         return ""
 
-
-app.add_url_rule('/recipes', view_func=RecipeAPI.as_view('recipes'))
+recipe_view = RecipeAPI.as_view('recipes')
+app.add_url_rule('/recipes/', view_func=recipe_view, methods=['GET',], defaults={"r_id": None})
+app.add_url_rule('/recipes', view_func=recipe_view, methods=['POST',])
+app.add_url_rule('/recipes/<int:r_id>', view_func=recipe_view, methods=['PUT', 'DELETE'])
 '''
 @app.route("/users")
 def users():

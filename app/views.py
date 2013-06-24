@@ -15,10 +15,19 @@ class RecipeAPI(MethodView):
 
     def get(self, r_id):
         searchstr = request.args.get('data')
+        searchtype = request.args.get('type')
         if searchstr is None:
             recipes = db.session.query(Recipe).all()
         else:
-            recipes = db.session.query(Recipe).filter(func.substr(func.lower(Recipe.name), 1, len(searchstr)) == func.lower(searchstr)).all()
+            if searchtype == 'name':
+                recipes = db.session.query(Recipe).filter(func.substr(func.lower(Recipe.name), 1, len(searchstr)) == func.lower(searchstr)).all()
+            else:
+                searchstr = searchstr.lower()
+                recipes = db.session.query(Recipe).all()
+                #Ugly hack...
+                #TODO: Change the database models to use a list of tables of a new model
+                recipe_ids = [r.id for r in recipes if searchstr in map(lambda x: x.lower(), r.ingredients)]
+                recipes = db.session.query(Recipe).filter(Recipe.id.in_(recipe_ids)).all()
 
         return jsonify(items=[recipe.to_json() for recipe in recipes])
     

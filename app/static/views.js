@@ -32,11 +32,12 @@
     
     searchFunc : function(event) {
         var name = $('#sname');
+        var type = $('#stype');
         $('#dialog-search').dialog({
             modal: 'true',
             buttons: {
                 "Search": function() {
-                    searchlist.fetch({data: $.param({'data': name.val()})}).done(function () {
+                    searchlist.fetch({data: $.param({'data': name.val(), 'type': type.val()})}).done(function () {
                         var view = new RecipeView({collection: searchlist});
                         view.render();
                     });

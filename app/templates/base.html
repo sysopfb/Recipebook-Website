@@ -20,7 +20,7 @@
     <script src={{url_for('static', filename='views.js')}}></script></script>
     <script type="text/template" id="recipe-template">
         <li data-id=<%- id %>>
-            <h1><%- name %></h1><br>
+            <h1><%- name %></h1>
             Ingredients:<br>
             <ul id="ingredients">
                 <% _.each(ingredients, function(data) {

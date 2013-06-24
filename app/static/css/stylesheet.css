@@ -30,3 +30,24 @@ color: grey;
 .ui-dialog-titlebar-close {
   visibility: hidden;
 }
+
+h1
+{
+font-weight: bold;
+font-size: 300%;
+margin: 0px;
+}
+
+#recipe-list > li
+{
+display: block;
+color: #000;
+background-color: #FFF;
+margin: 0 0 .2em 0;
+}
+
+#recipe-list > li:hover
+{
+background-color: #369;
+color: #FFF;
+}

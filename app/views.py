@@ -8,7 +8,7 @@ import json
 
 from app import app, db
 
-from models import Recipe
+from models import Recipe, RecipeIngredient
 
 
 class RecipeAPI(MethodView):
@@ -23,11 +23,7 @@ class RecipeAPI(MethodView):
                 recipes = db.session.query(Recipe).filter(func.substr(func.lower(Recipe.name), 1, len(searchstr)) == func.lower(searchstr)).all()
             else:
                 searchstr = searchstr.lower()
-                recipes = db.session.query(Recipe).all()
-                #Ugly hack...
-                #TODO: Change the database models to use a list of tables of a new model
-                recipe_ids = [r.id for r in recipes if searchstr in map(lambda x: x.lower(), r.ingredients)]
-                recipes = db.session.query(Recipe).filter(Recipe.id.in_(recipe_ids)).all()
+                recipes = db.session.query(Recipe).join(Recipe.ingredients).filter(RecipeIngredient.name==searchstr).all()
 
         return jsonify(items=[recipe.to_json() for recipe in recipes])
     
@@ -36,7 +32,13 @@ class RecipeAPI(MethodView):
         data = json.loads(request.data)
         recipe = db.session.query(Recipe).filter_by(id=r_id).first()
         recipe.name = data["name"]
-        recipe.ingredients = data["ingredients"]
+        #recipe.ingredients = data["ingredients"]
+        for rec in recipe.ingredients:
+            db.session.delete(rec)
+        for ingredient in data["ingredients"]:
+            irec = RecipeIngredient()
+            irec.name = ingredient
+            recipe.ingredients.append(irec)
         recipe.instructions = data["instructions"]
         recipe.author = data["author"]
         db.session.add(recipe)
@@ -62,7 +64,10 @@ class RecipeAPI(MethodView):
         data = json.loads(request.data)
         recipe = Recipe()
         recipe.name = data["name"]
-        recipe.ingredients = data["ingredients"]
+        for ingredient in data["ingredients"]:
+            irec = RecipeIngredient()
+            irec.name = ingredient
+            recipe.ingredients.append(irec)
         recipe.instructions = data["instructions"]
         recipe.author = data["author"]
         db.session.add(recipe)

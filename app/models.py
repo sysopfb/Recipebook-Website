@@ -41,7 +41,7 @@ class Post(Base):
         return '<Post %r>' % (self.body)
 '''
 class Recipe(Base):
-    __tablename__ = 'recipes'
+    __tablename__ = 'recipe'
 
     __table_args__ = {}
 
@@ -49,7 +49,7 @@ class Recipe(Base):
     
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(64), unique = True)
-    ingredients = db.Column(db.PickleType())
+    ingredients = db.relationship("RecipeIngredient")
     instructions = db.Column(db.PickleType())
     author = db.Column(db.String(64))
 #    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -57,9 +57,24 @@ class Recipe(Base):
     def to_json(self):
         return dict(id = self.id,
                     name=self.name,
-                    ingredients=self.ingredients,
+                    ingredients=[x.name for x in self.ingredients],
                     instructions=self.instructions,
                     author=self.author)
     
     def __repr__(self):
         return '<Recipe %r>' % (self.name)
+
+class RecipeIngredient(Base):
+    __tablename__ = 'ingredient'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(256))
+    parent_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
+
+    def to_json(self):
+        return dict(id = self.id,
+                    name = self.name,
+                    parent_id = self.parent_id)
+
+    def __repr__(self):
+        return 'Ingredient %r>' % (self.name)

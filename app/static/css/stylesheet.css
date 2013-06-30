@@ -35,11 +35,8 @@ h1
 {
 font-weight: bold;
 font-size: 300%;
-margin: 0px;
-}
-#recipe-list
-{
 text-align: center;
+margin-left: -20em;
 }
 
 #recipe-list > li
@@ -47,6 +44,7 @@ text-align: center;
 display: block;
 color: #000;
 background-color: #FFF;
+border-bottom:solid;
 margin: 0 0 .2em 0;
 }
 
@@ -56,6 +54,12 @@ background-color: #0066FF;
 color: #FFF;
 }
 
+#recipe-list ol
+{
+width: 50%;
+}
+/* This would make it go center horizontally  */
+/*
 #recipe-list ul
 {
 position: relative;
@@ -73,3 +77,4 @@ left: 50%;
 margin-left: -3em;
 text-align: left;
 }
+*/

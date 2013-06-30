@@ -1,45 +1,46 @@
 from app import db
 from sqlalchemy.ext.declarative import declarative_base
 
+
+ROLE_USER = 0
+ROLE_ADMIN = 1
+
 #Base = declarative_base()
 Base = db.Model
-'''
+
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = 'user'
 
     __table_args__ = {}
 
 
     
     id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(64), unique = True)
+    nickname = db.Column(db.String(64), unique = True)
     email = db.Column(db.String(120), unique = True)
-    posts = db.relationship('Post', backref = 'author', lazy = 'dynamic')
-    recipes = db.relationship('Recipe', backref = 'author', lazy = 'dynamic')
+    role = db.Column(db.SmallInteger, default = ROLE_USER)
+    recipes = db.relationship('Recipe')
 
     def to_json(self):
         return dict(id = self.id,
-                    name=self.name,
+                    name=self.nickname,
                     email = self.email)
 
-    def __repr__(self):
-        return '<User %r>' % (self.name)
+    def is_authenticated(self):
+        return True
 
-class Post(Base):
-    __tablename__ = 'posts'
+    def is_active(self):
+        return True
 
-    __table_args__ = {}
+    def is_anonymous(self):
+        return False
 
-
-    
-    id = db.Column(db.Integer, primary_key = True)
-    body = db.Column(db.String(140))
-    timestamp = db.Column(db.DateTime)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    def get_id(self):
+        return unicode(self.id)
 
     def __repr__(self):
-        return '<Post %r>' % (self.body)
-'''
+        return '<User %r>' % (self.nickname)
+
 class Recipe(Base):
     __tablename__ = 'recipe'
 
@@ -52,7 +53,7 @@ class Recipe(Base):
     ingredients = db.relationship("RecipeIngredient")
     instructions = db.Column(db.PickleType())
     author = db.Column(db.String(64))
-#    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def to_json(self):
         return dict(id = self.id,

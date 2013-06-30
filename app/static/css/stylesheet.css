@@ -37,6 +37,10 @@ font-weight: bold;
 font-size: 300%;
 margin: 0px;
 }
+#recipe-list
+{
+text-align: center;
+}
 
 #recipe-list > li
 {
@@ -48,6 +52,24 @@ margin: 0 0 .2em 0;
 
 #recipe-list > li:hover
 {
-background-color: #369;
+background-color: #0066FF;
 color: #FFF;
+}
+
+#recipe-list ul
+{
+position: relative;
+display: block;
+left: 50%;
+margin-left: -3em;
+text-align: left;
+}
+
+#recipe-list ol
+{
+position: relative;
+display: block;
+left: 50%;
+margin-left: -3em;
+text-align: left;
 }

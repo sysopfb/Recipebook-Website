@@ -37,9 +37,14 @@
         </li>
     </script>
     <div id="navigation">
-        <a id='AllButton' href="#">Get All</a>
-        <a id='Search' href="#">Search</a>
-        <a id='Create' href="#">Create</a>
+        {% if g.user.is_authenticated() %}
+        | <a id='AllButton' href="#">Get All</a>
+        | <a id='Search' href="#">Search</a>
+        | <a id='Create' href="#">Create</a>
+        | <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+        | <a id='Login' href="{{ url_for('login') }}">Login</a>
+        {% endif %}
     </div>
     {% block content %}{% endblock %}
 </body>

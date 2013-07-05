@@ -118,7 +118,8 @@ def index():
 
 @app.route('/logout')
 def logout():
-    print g.user.nickname
+    print g.user.nickname,
+    print "has logged out"
     logout_user()
     return redirect(url_for('index'))
     

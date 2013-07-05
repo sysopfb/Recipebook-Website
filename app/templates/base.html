@@ -18,6 +18,7 @@
     <script src={{url_for('static', filename='models.js')}}></script></script>
     <script src={{url_for('static', filename='collections.js')}}></script></script>
     <script src={{url_for('static', filename='views.js')}}></script></script>
+    <script src="/static/js/tooltips.js"></script>
     <script type="text/template" id="recipe-template">
         <li data-id=<%- id %>>
             <h1><%- name %></h1>
@@ -38,12 +39,12 @@
     </script>
     <div id="navigation">
         {% if g.user.is_authenticated() %}
-        | <a id='AllButton' href="#">Get All</a>
-        | <a id='Search' href="#">Search</a>
-        | <a id='Create' href="#">Create</a>
-        | <a href="{{ url_for('logout') }}">Logout</a>
+        | <a id='AllButton' rel="tooltip" title="Click here to get all of your recipes" href="#">Get All</a>
+        | <a id='Search' rel="tooltip" title="Click here to search for recipes" href="#">Search</a>
+        | <a id='Create' rel="tooltip" title="Click here to create a new recipe" href="#">Create</a>
+        | <a rel="tooltip" title="Click here to logout" href="{{ url_for('logout') }}">Logout</a>
         {% else %}
-        | <a id='Login' href="{{ url_for('login') }}">Login</a>
+        | <a id='Login' rel="tooltip" title="Click here to either login or create a new account!" href="{{ url_for('login') }}">Login</a>
         {% endif %}
     </div>
     {% block content %}{% endblock %}
